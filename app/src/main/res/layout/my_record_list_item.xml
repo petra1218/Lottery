@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/my_record_list_item_expect"
+        android:layout_width="64dp"
+        android:layout_height="24dp" />
+
+
+    <TextView
+        android:id="@+id/my_record_list_item_time"
+        android:layout_width="96dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:gravity="right" />
+
+    <ImageButton
+        android:id="@+id/my_record_list_item_status"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentRight="true" />
+
+    <LinearLayout
+        android:id="@+id/my_record_list_item_num_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/my_record_list_item_time"
+        android:layout_toRightOf="@id/my_record_list_item_expect"
+        android:weightSum="7.5">
+
+
+        <TextView
+            android:id="@+id/my_record_list_item_num1"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/my_record_list_item_num2"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/my_record_list_item_num3"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/my_record_list_item_num4"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/my_record_list_item_num5"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/my_record_list_item_num6"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/my_record_list_item_num7"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_weight="1.5"
+            android:gravity="center_horizontal" />
+
+    </LinearLayout>
+</RelativeLayout>
