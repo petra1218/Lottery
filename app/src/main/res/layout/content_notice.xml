@@ -11,24 +11,10 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.petra.lottery.MainActivity"
-    tools:showIn="@layout/activity_main"
+    tools:context="com.petra.lottery.NoticeActivity"
+    tools:showIn="@layout/activity_notice"
     >
 
-  <include
-      layout="@layout/my_record_list_item"
-      android:id="@+id/official_balloon"
-      />
-
-  <android.support.v7.widget.RecyclerView
-      android:id="@+id/my_balloon_list"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/official_balloon"
-      android:layout_marginBottom="64dp"
-      android:layout_marginTop="32dp"
-      android:background="@drawable/balloon_list_shape_bg"
-      />
 
 
 </RelativeLayout>
