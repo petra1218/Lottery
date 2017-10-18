@@ -14,21 +14,35 @@
     tools:context="com.petra.lottery.MainActivity"
     tools:showIn="@layout/activity_main"
     >
-
-  <include
-      layout="@layout/my_record_list_item"
-      android:id="@+id/official_balloon"
-      />
-
-  <android.support.v7.widget.RecyclerView
-      android:id="@+id/my_balloon_list"
+  <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_below="@+id/official_balloon"
-      android:layout_marginBottom="64dp"
-      android:layout_marginTop="32dp"
-      android:background="@drawable/balloon_list_shape_bg"
-      />
+      android:layout_height="match_parent"
+      android:weightSum="4"
+      android:orientation="vertical"
+      >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+      <include
+          layout="@layout/my_record_list_item"
+          android:id="@+id/official_balloon"
+          />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/my_balloon_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:layout_below="@+id/official_balloon"
+        android:layout_marginBottom="64dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/balloon_list_shape_bg"
+        />
+
+  </LinearLayout>
 
 
 </RelativeLayout>

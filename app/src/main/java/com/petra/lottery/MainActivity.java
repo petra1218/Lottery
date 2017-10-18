@@ -3,11 +3,15 @@ package com.petra.lottery;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.ServiceConnection;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,8 +23,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,11 +35,21 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class MainActivity extends AppCompatActivity implements View.OnLongClickListener {
+  @BindView(R.id.my_record_list_item_time) TextView myRecordListItemTime;
+  @BindView(R.id.official_red_1) TextView officialRed1;
+  @BindView(R.id.official_red_2) TextView officialRed2;
+  @BindView(R.id.official_red_3) TextView officialRed3;
+  @BindView(R.id.official_red_4) TextView officialRed4;
+  @BindView(R.id.official_red_5) TextView officialRed5;
+  @BindView(R.id.official_red_6) TextView officialRed6;
+  @BindView(R.id.official_blue) TextView officialBlue;
+  @BindView(R.id.my_balloon_list) RecyclerView myBalloonList;
+  @BindView(R.id.official_balloon) OfficialBalloonLayout officialBalloonLayout;
   public static final String OFFICIALE_BALLOON = "OfficialeBalloon";
   Handler handler = new Handler() {
     @Override public void handleMessage(Message msg) {
@@ -57,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
       ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
       byte[] data = new byte[1024];
       try {
-        URL url = new URL("http://f.apiplus.cn/ssq-1.json");
+        URL url = new URL("http://f.apiplus.cn/ssq-10.json");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         InputStream inputStream = connection.getInputStream();
         int len = 0;
@@ -76,14 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = jsonArray.length() - 1; i >= 0; i--) {
           JSONObject jsonObject = jsonArray.getJSONObject(i);
-          int expect = jsonObject.getInt("expect");
-          String opencode = jsonObject.getString("opencode");
-          String time = jsonObject.getString("opentime");
-
-          int index_splite = opencode.indexOf("+");
-          String reds = opencode.substring(0, index_splite);
-          String blue = opencode.substring(index_splite + 1);
-          MyBalloonBean bean = new MyBalloonBean(reds.split(","), blue, time, "" + expect);
+          MyBalloonBean bean = parseBalloonBean(jsonObject);
           Message msg = new Message();
           Bundle bundle = new Bundle();
           bundle.putSerializable(OFFICIALE_BALLOON, bean);
@@ -94,7 +104,19 @@ public class MainActivity extends AppCompatActivity {
 
       }
     }
+
+    @NonNull private MyBalloonBean parseBalloonBean(JSONObject jsonObject) throws JSONException {
+      int expect = jsonObject.getInt("expect");
+      String opencode = jsonObject.getString("opencode");
+      String time = jsonObject.getString("opentime");
+
+      int index_splite = opencode.indexOf("+");
+      String reds = opencode.substring(0, index_splite);
+      String blue = opencode.substring(index_splite + 1);
+      return new MyBalloonBean(reds.split(","), blue, time, "" + expect);
+    }
   };
+
   RouseService service;
 
   ServiceConnection connectioned = new ServiceConnection() {
@@ -106,15 +128,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
   };
-  @BindView(R.id.my_record_list_item_time) TextView myRecordListItemTime;
-  @BindView(R.id.official_red_1) TextView officialRed1;
-  @BindView(R.id.official_red_2) TextView officialRed2;
-  @BindView(R.id.official_red_3) TextView officialRed3;
-  @BindView(R.id.official_red_4) TextView officialRed4;
-  @BindView(R.id.official_red_5) TextView officialRed5;
-  @BindView(R.id.official_red_6) TextView officialRed6;
-  @BindView(R.id.official_blue) TextView officialBlue;
-  @BindView(R.id.my_balloon_list) RecyclerView myBalloonList;
   private MyBalloonListAdapter adapter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +138,8 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    initMyBalloon();
+
+    new Thread(netRunnable).start();
 
     //final MainActivityFragment fragment = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -140,9 +154,14 @@ public class MainActivity extends AppCompatActivity {
         Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         new Thread(netRunnable).start();
 
+        officialBalloonLayout.setOnLongClickListener(MainActivity.this);
         //MainActivity.this.finish();
       }
     });
+
+    initMyBalloon();
+    SQLiteDatabase db = SQLiteDatabase.openDatabase(Environment.getExternalStorageDirectory() + "/my.db", null, SQLiteDatabase.CREATE_IF_NECESSARY );
+    db.execSQL("PRAGMA key = 'secretkey'");
   }
 
   private void initMyBalloon() {
@@ -194,5 +213,15 @@ public class MainActivity extends AppCompatActivity {
       }
     }
     return false;
+  }
+
+  @Override public boolean onLongClick(View v) {
+    Intent intent = new Intent(MainActivity.this, OfficialBalloonListActivity.class);
+    startActivityForResult(intent, 1);
+    return false;
+  }
+
+  @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
   }
 }

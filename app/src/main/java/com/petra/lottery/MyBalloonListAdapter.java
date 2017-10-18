@@ -46,7 +46,15 @@ public class MyBalloonListAdapter extends RecyclerView.Adapter<MyBalloonListAdap
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         if (bean.getBlueNum().equals(officialeBalloon.getBlueNum())) {
           holder.officialBlue.setBackground(context.getDrawable(R.drawable.balloon_shape_blue_matched));
+        } else {
+          holder.officialBlue.setBackground(context.getDrawable(R.drawable.balloon_shape_blue));
         }
+        holder.officialRed1.setBackground(context.getDrawable(R.drawable.balloon_shape_red));
+        holder.officialRed2.setBackground(context.getDrawable(R.drawable.balloon_shape_red));
+        holder.officialRed3.setBackground(context.getDrawable(R.drawable.balloon_shape_red));
+        holder.officialRed4.setBackground(context.getDrawable(R.drawable.balloon_shape_red));
+        holder.officialRed5.setBackground(context.getDrawable(R.drawable.balloon_shape_red));
+        holder.officialRed6.setBackground(context.getDrawable(R.drawable.balloon_shape_red));
         for (String balloon : officialeBalloon.getRedNums()) {
           if (balloon.equals(bean.getRedNums()[0])) {
             holder.officialRed1.setBackground(context.getDrawable(R.drawable.balloon_shape_red_matched));
@@ -83,10 +91,12 @@ public class MyBalloonListAdapter extends RecyclerView.Adapter<MyBalloonListAdap
     @BindView(R.id.official_red_5) TextView officialRed5;
     @BindView(R.id.official_red_6) TextView officialRed6;
     @BindView(R.id.official_blue) TextView officialBlue;
+    @BindView(R.id.my_record_list_layout) View myRecordListLayout;
 
     MyBalloonHolder(View view) {
       super(view);
       ButterKnife.bind(this, view);
+      myRecordListLayout.setBackground(null);
     }
   }
 
