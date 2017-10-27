@@ -39,7 +39,6 @@
         android:label="@string/title_activity_notice"
         android:theme="@android:style/Theme.DeviceDefault.Dialog.MinWidth">
     </activity>
-    <activity android:name=".OfficialBalloonListActivity"/>
   </application>
 
 </manifest>
