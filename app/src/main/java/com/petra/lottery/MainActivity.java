@@ -58,9 +58,7 @@ public class MainActivity extends AppCompatActivity {
     TextView officialBlue;
     @BindView(R.id.my_balloon_list)
     RecyclerView myBalloonList;
-
     public static final String OFFICIALE_BALLOON = "OfficialeBalloon";
-
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
