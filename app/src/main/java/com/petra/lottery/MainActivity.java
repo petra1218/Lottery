@@ -29,8 +29,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -166,6 +170,19 @@ public class MainActivity extends AppCompatActivity {
                 //  bindService(intent, connectioned, Context.BIND_AUTO_CREATE);
                 //}
                 //
+                File path = Environment.getExternalStorageDirectory();
+
+                File tsFile = new File(path.getAbsolutePath() + "/a.txt");
+                try {
+                    FileOutputStream os = new FileOutputStream(tsFile);
+                    os.write(new String("aaaaaaaaaaaaaaaa").getBytes());
+                    os.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 new Thread(netRunnable).start();
 
@@ -174,8 +191,21 @@ public class MainActivity extends AppCompatActivity {
         });
 
         initMyBalloon();
-        SQLiteDatabase db = SQLiteDatabase.openDatabase(Environment.getExternalStorageDirectory() + "/my.db", null, SQLiteDatabase.CREATE_IF_NECESSARY);
-        db.execSQL("PRAGMA key = 'secretkey'");
+
+        File path = Environment.getExternalStorageDirectory();
+
+        File tsFile = new File(path.getAbsolutePath() + "/a.txt");
+        try {
+            FileOutputStream os = new FileOutputStream(tsFile);
+            os.write(new String("aaaaaaaaaaaaaaaa").getBytes());
+            os.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        SQLiteDatabase db = SQLiteDatabase.openDatabase(path.getAbsolutePath() + "/my.db", null, SQLiteDatabase.CREATE_IF_NECESSARY);
+//        db.execSQL("PRAGMA key = 'secretkey'");
     }
 
     private void initMyBalloon() {
