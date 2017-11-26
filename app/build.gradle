@@ -1,6 +1,10 @@
 apply plugin: 'com.android.application'
 //apply plugin: 'com.jakewharton.butterknife-gradle-plugin'
 
+def releaseTime() {
+    return new Date().format("yyyy.MM.dd", TimeZone.getTimeZone("UTC"))
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion '26.0.2'
@@ -9,15 +13,38 @@ android {
         applicationId "com.petra.lottery"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 101005
+        versionName "1.0.1.005"
     }
+
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            //混淆
+//            minifyEnabled true
+            //Zipalign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+//            shrinkResources true
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+//            applicationVariants.all { variant ->
+//                variant.outputs.each { output ->
+//                    def outputFile = output.outputFile
+//                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+//                        // 输出apk名称为appname-1.0-beta1-xxxx-xx-xx.apk
+//                        def fileName = "app-${defaultConfig.versionName}-beta1-${releaseTime()}.apk"
+//                        outputFile = new File(outputFile.parent, fileName)
+//                    }
+//                }
+//            }
         }
     }
+//    //执行lint检查，有任何的错误或者警告提示，都会终止构建
+//    lintOptions {
+//        abortOnError false
+//    }
 }
 
 dependencies {
@@ -37,4 +64,8 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'cn.hugeterry.coordinatortablayout:coordinatortablayout:1.0.6'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    //bugly的仓库
+    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
+//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
+    //compile 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
 }

@@ -24,6 +24,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.tencent.bugly.beta.Beta;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +45,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     @BindView(R.id.my_record_list_item_time)
     TextView myRecordListItemTime;
     @BindView(R.id.official_red_1)
@@ -161,49 +163,11 @@ public class MainActivity extends AppCompatActivity {
 
         //final MainActivityFragment fragment = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Intent intent = new Intent(MainActivity.this, RouseService.class);
-                //if (!isWorked("com.petra.lottery.RouseService")) {
-                //  startService(intent);
-                //  bindService(intent, connectioned, Context.BIND_AUTO_CREATE);
-                //}
-                //
-                File path = Environment.getExternalStorageDirectory();
-
-                File tsFile = new File(path.getAbsolutePath() + "/a.txt");
-                try {
-                    FileOutputStream os = new FileOutputStream(tsFile);
-                    os.write(new String("aaaaaaaaaaaaaaaa").getBytes());
-                    os.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                new Thread(netRunnable).start();
-
-                //MainActivity.this.finish();
-            }
-        });
+        fab.setOnClickListener(this);
+        FloatingActionButton hide = (FloatingActionButton) findViewById(R.id.hide);
+        hide.setOnClickListener(this);
 
         initMyBalloon();
-
-        File path = Environment.getExternalStorageDirectory();
-
-        File tsFile = new File(path.getAbsolutePath() + "/a.txt");
-        try {
-            FileOutputStream os = new FileOutputStream(tsFile);
-            os.write(new String("aaaaaaaaaaaaaaaa").getBytes());
-            os.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 //        SQLiteDatabase db = SQLiteDatabase.openDatabase(path.getAbsolutePath() + "/my.db", null, SQLiteDatabase.CREATE_IF_NECESSARY);
 //        db.execSQL("PRAGMA key = 'secretkey'");
     }
@@ -264,5 +228,50 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab:
+                clickFab(v);
+                break;
+            case R.id.hide:
+                clickHide(v);
+                break;
+        }
+
+    }
+
+    private void clickHide(View v) {
+        int i = 1 / 0;
+        Beta.checkUpgrade(true, false);
+        //Intent intent = new Intent(MainActivity.this, RouseService.class);
+
+        //if (!isWorked("com.petra.lottery.RouseService")) {
+        //  startService(intent);
+        //  bindService(intent, connectioned, Context.BIND_AUTO_CREATE);
+        //}
+        //
+        File path = Environment.getExternalStorageDirectory();
+
+        File tsFile = new File(path.getAbsolutePath() + "/a.txt");
+        try {
+            FileOutputStream os = new FileOutputStream(tsFile);
+            os.write(new String("aaaaaaaaaaaaaaaa").getBytes());
+            os.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void clickFab(View v) {
+        Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        new Thread(netRunnable).start();
+
+        //MainActivity.this.finish();
     }
 }
